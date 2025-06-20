@@ -18,8 +18,12 @@ def send_messages(sock):
     while True:
         try:
             message = input()
+            if message.lower() == 'exit':
+                print("Exiting chat.")
+                sock.close()
+                break
             sock.send(message.encode())
-        except:
+        except Exception as e:
             print("Error sending data.")
             break
 
@@ -29,9 +33,12 @@ if len(sys.argv) != 3:
 
 IP_address = sys.argv[1]
 Port = int(sys.argv[2])
-
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.connect((IP_address, Port))
+try:
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.connect((IP_address, Port))
+except Exception as e:
+    print(f"Connection failed: {e}")
+    sys.exit()
 
 print("Connected to chat server. Type your messages below:\n")
 
