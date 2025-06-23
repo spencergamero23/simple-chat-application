@@ -6,9 +6,8 @@ The program written is has two elements. The server and the client! The server w
 
 My purpose for doing this project is to continue to expand my knowledge. Always wondered how others got started with these kind of chat rooms and now I know!
 
-{Provide a link to your YouTube demonstration.  It should be a 4-5 minute demo of the software running (you will need to show two pieces of software running and communicating with each other) and a walkthrough of the code.}
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/x4UiFAkS1ho)
 
 # Network Communication
 
