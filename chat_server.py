@@ -2,14 +2,10 @@
 import socket 
 import select 
 import sys 
-'''Replace "thread" with "_thread" for python 3'''
 from _thread import *
 
-"""The first argument AF_INET is the address domain of the 
-socket. This is used when we have an Internet Domain with 
-any two hosts The second argument is the type of socket. 
-SOCK_STREAM means that data or characters are read in 
-a continuous flow."""
+# creates a TCP/IP socket
+# AF_INET is the address family for IPv4
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
 
@@ -24,17 +20,10 @@ IP_address = str(sys.argv[1])
 # takes second argument from command prompt as port number 
 Port = int(sys.argv[2]) 
 
-""" 
-binds the server to an entered IP address and at the 
-specified port number. 
-The client must be aware of these parameters 
-"""
+# binds the server to an IP address and a port number
 server.bind((IP_address, Port)) 
 
-""" 
-listens for 100 active connections. This number can be 
-increased as per convenience. 
-"""
+# server listens for incoming connections, the argument specifies""
 server.listen(100) 
 
 list_of_clients = [] 
@@ -48,26 +37,23 @@ def clientthread(conn, addr):
                 message = conn.recv(2048) 
                 if message: 
                     message = message.decode()
-                    """prints the message and address of the 
-                    user who just sent the message on the server 
-                    terminal"""
+                    
+                    # print the message and address of the user
                     print ("<" + addr[0] + "> " + message) 
 
                     # Calls broadcast function to send message to all 
                     broadcast("<" + addr[0] + "> " + message, conn) 
 
                 else: 
-                    """message may have no content if the connection 
-                    is broken, in this case we remove the connection"""
+                    # if the message is not received, the user has 
+                    # disconnected, remove them from the list
                     remove(conn) 
                     break
 
             except: 
                 continue
 
-"""Using the below function, we broadcast the message to all 
-clients who's object is not the same as the one sending 
-the message """
+# The following function shows the message to all clients.
 def broadcast(message, connection): 
     for clients in list_of_clients: 
         if clients!=connection: 
@@ -80,24 +66,16 @@ def broadcast(message, connection):
 
                 # if the link is broken, we remove the client 
                 remove(clients) 
-
-"""The following function simply removes the object 
-from the list that was created at the beginning of 
-the program"""
+# Removes the object from the list.
 def remove(connection): 
     if connection in list_of_clients: 
         list_of_clients.remove(connection) 
 
 while True: 
 
-    """Accepts a connection request and stores two parameters, 
-    conn which is a socket object for that user, and addr 
-    which contains the IP address of the client that just 
-    connected"""
+    # Accepts a connection from a client
     conn, addr = server.accept() 
-
-    """Maintains a list of clients for ease of broadcasting 
-    a message to all available people in the chatroom"""
+    # maintains a list of clients
     list_of_clients.append(conn) 
 
     # prints the address of the user that just connected 
